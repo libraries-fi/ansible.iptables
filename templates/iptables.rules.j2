@@ -9,6 +9,7 @@ iptables -X
 
 # Accept all from localhost
 iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -d 127.0.0.1 -j ACCEPT
 
 # Forwarded ports.
 {% for forward in iptables_forwarded_tcp_ports %}
@@ -18,33 +19,56 @@ iptables -t nat -I PREROUTING -p tcp --dport {{forward.from}} -j REDIRECT --to-p
 iptables -t nat -I PREROUTING -p udp --dport {{forward.from}} -j REDIRECT --to-port {{forward.to}}
 {% endfor %}
 
-# Allowed ports.
-{% for port in iptables_allowed_tcp_ports %}
+#Extra ports allowed for spesific ips
+{% for n in iptables_allow_ports_by_ip %}
+iptables -A INPUT -p {{n.protocol}} -m {{n.protocol}} -s {{n.ip}} --dport {{n.port}} -j ACCEPT
+iptables -A OUTPUT -p {{n.protocol}} -m {{n.protocol}} -d {{n.ip}} --dport {{n.port}} -j ACCEPT
+{% endfor %}
+
+# Allowed tcp ports in.
+{% for port in iptables_allowed_tcp_ports_in %}
 iptables -A INPUT -p tcp -m tcp --dport {{port}} -j ACCEPT
 {% endfor %}
-{% for port in iptables_allowed_udp_ports %}
-iptables -A INPUT -p tcp -m udp --dport {{port}} -j ACCEPT
+# Allowed tcp ports out.
+{% for port in iptables_allowed_tcp_ports_out %}
+iptables -A OUTPUT -p tcp -m tcp --dport {{port}} -j ACCEPT
+{% endfor %}
+# Allowed upd ports in.
+{% for port in iptables_allowed_udp_ports_in %}
+iptables -A INPUT -p udp -m udp --dport {{port}} -j ACCEPT
+{% endfor %}
+# Allowed upd ports out.
+{% for port in iptables_allowed_udp_ports_out %}
+iptables -A OUTPUT -p udp -m udp --dport {{port}} -j ACCEPT
 {% endfor %}
 
 # Accept icmp ping requests.
 iptables -A INPUT -p icmp -j ACCEPT
+iptables -A OUTPUT -p icmp -j ACCEPT
 
 # Allow NTP traffic for time synchronization.
 iptables -A OUTPUT -p udp --dport 123 -j ACCEPT
 iptables -A INPUT -p udp --sport 123 -j ACCEPT
 
-# Raw roles
+# Allow google public DNS
+iptables -A OUTPUT -d 8.8.8.8 -j ACCEPT
+iptables -A OUTPUT -d 8.8.4.4 -j ACCEPT 
+
+# Raw rules
 {% for rule in iptables_raw_rules %}
 {{rule}}
 {% endfor %}
 
 # Allow established connections:
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 {% if iptables_logging %}
 # Logging
 iptables -A INPUT -m limit --limit 15/minute -j LOG --log-level 7 --log-prefix "Dropped by iptables: "
+iptables -A OUTPUT -m limit --limit 15/minute -j LOG --log-level 7 --log-prefix "Dropped by iptables: "
 {% endif %}
 
 # Drop all other
 iptables -A INPUT -j DROP
+iptables -A OUTPUT -j DROP
