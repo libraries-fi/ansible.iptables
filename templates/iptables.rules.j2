@@ -54,6 +54,10 @@ iptables -A INPUT -p udp --sport 123 -j ACCEPT
 iptables -A OUTPUT -d 8.8.8.8 -j ACCEPT
 iptables -A OUTPUT -d 8.8.4.4 -j ACCEPT 
 
+# Allow all traffic on loopback.
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
+
 # Raw rules
 {% for rule in iptables_raw_rules %}
 {{rule}}
