@@ -3,7 +3,13 @@
 iptables_enabled: yes                   # The role is enabled
 iptables_logging: yes                   # Log dropped packets
 
-iptables_rule_path: /etc/iptables.rules # Path to rule file
+iptables_flush_all: yes                 # Flush and remove all chains
+iptables_deny_all : yes                 # Deny all except allowed
+
+iptables_confdir: /etc/iptables
+iptables_rules_path: "{{ iptables_confdir }}/rules.v4"  # Path to rule file
+
+iptables_load_path: /etc/network/if-up.d/iptables_load # Set empty for prevent loading
 
 iptables_allowed_tcp_ports_in: [20, 21, 22, 80, 138, 443, 8080, 8081] # List of allowed tcp ports in for all ips
 
