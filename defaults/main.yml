@@ -11,9 +11,9 @@ iptables_rules_path: "{{ iptables_confdir }}/rules.v4"  # Path to rule file
 
 iptables_load_path: /etc/network/if-up.d/iptables_load # Set empty for prevent loading
 
-iptables_allowed_tcp_ports_in: [20, 21, 22, 80, 138, 443, 8080, 8081] # List of allowed tcp ports in for all ips
+iptables_allowed_tcp_ports_in: [22, 80, 443] # List of allowed tcp ports in for all ips
 
-iptables_allowed_tcp_ports_out: [20, 21, 22, 80, 138, 443, 8080, 8081] # List of allowed tcp ports out for all ips
+iptables_allowed_tcp_ports_out: [22, 80, 443] # List of allowed tcp ports out for all ips
 
 iptables_forwarded_tcp_ports: []        # Forward tcp ports
                                         # Ex. iptables_forwarded_tcp_ports:
