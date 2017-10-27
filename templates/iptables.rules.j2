@@ -9,7 +9,7 @@ iptables -X
 
 # Accept all from localhost
 iptables -A INPUT -i lo -j ACCEPT
-iptables -A OUTPUT -d 127.0.0.1 -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
 
 # Forwarded ports.
 {% for forward in iptables_forwarded_tcp_ports %}
