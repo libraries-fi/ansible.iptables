@@ -48,7 +48,7 @@ ip6tables -A INPUT -p udp -m udp --dport {{port}} -j ACCEPT
 ip6tables -A OUTPUT -p udp -m udp --dport {{port}} -j ACCEPT
 {% endfor %}
 
-# Accept icmp ping requests.
+# Accept ICMP packets, for example ping.
 ip6tables -A INPUT -p icmpv6 -j ACCEPT
 ip6tables -A OUTPUT -p icmpv6 -j ACCEPT
 

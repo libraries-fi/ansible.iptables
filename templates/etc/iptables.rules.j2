@@ -48,7 +48,7 @@ iptables -A INPUT -p udp -m udp --dport {{port}} -j ACCEPT
 iptables -A OUTPUT -p udp -m udp --dport {{port}} -j ACCEPT
 {% endfor %}
 
-# Accept icmp ping requests.
+# Accept ICMP packets, for example ping.
 iptables -A INPUT -p icmp -j ACCEPT
 iptables -A OUTPUT -p icmp -j ACCEPT
 
