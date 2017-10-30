@@ -7,9 +7,11 @@ iptables_flush_all: yes                 # Flush and remove all chains
 iptables_deny_all : yes                 # Deny all except allowed
 
 iptables_confdir: /etc/iptables
-iptables_rules_path: "{{ iptables_confdir }}/rules.v4"  # Path to rule file
+iptables_rules_path: "{{ iptables_confdir }}/rules.v4"  # Path to IPv4 rule file
+ip6tables_rules_path: "{{ iptables_confdir }}/rules.v6"  # Path to IPv6 rule file
 
 iptables_load_path: /etc/network/if-up.d/iptables_load # Set empty for prevent loading
+ip6tables_load_path: /etc/network/if-up.d/ip6tables_load # Set empty for prevent loading
 
 iptables_allowed_tcp_ports_in: [22, 80, 443] # List of allowed tcp ports in for all ips
 
