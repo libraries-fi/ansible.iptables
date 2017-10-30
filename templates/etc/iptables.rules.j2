@@ -25,7 +25,7 @@ iptables -t nat -I PREROUTING -p tcp --dport {{forward.from}} -j REDIRECT --to-p
 iptables -t nat -I PREROUTING -p udp --dport {{forward.from}} -j REDIRECT --to-port {{forward.to}}
 {% endfor %}
 
-#Extra ports allowed for spesific ips
+# Extra ports allowed for specific IPs
 {% for n in iptables_allow_ports_by_ip %}
 iptables -A INPUT -p {{n.protocol}} -m {{n.protocol}} -s {{n.ip}} --dport {{n.port}} -j ACCEPT
 iptables -A OUTPUT -p {{n.protocol}} -m {{n.protocol}} -d {{n.ip}} --dport {{n.port}} -j ACCEPT

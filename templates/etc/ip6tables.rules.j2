@@ -25,7 +25,7 @@ ip6tables -t nat -I PREROUTING -p tcp --dport {{forward.from}} -j REDIRECT --to-
 ip6tables -t nat -I PREROUTING -p udp --dport {{forward.from}} -j REDIRECT --to-port {{forward.to}}
 {% endfor %}
 
-#Extra ports allowed for spesific ips
+# Extra ports allowed for specific IPs
 {% for n in iptables_allow_ports_by_ip %}
 ip6tables -A INPUT -p {{n.protocol}} -m {{n.protocol}} -s {{n.ip}} --dport {{n.port}} -j ACCEPT
 ip6tables -A OUTPUT -p {{n.protocol}} -m {{n.protocol}} -d {{n.ip}} --dport {{n.port}} -j ACCEPT
