@@ -57,8 +57,8 @@ ip6tables -A OUTPUT -p udp --dport 123 -j ACCEPT
 ip6tables -A INPUT -p udp --sport 123 -j ACCEPT
 
 # Allow google public DNS
-ip6tables -A OUTPUT -d 8.8.8.8 -j ACCEPT
-ip6tables -A OUTPUT -d 8.8.4.4 -j ACCEPT 
+ip6tables -A OUTPUT -d 2001:4860:4860::8888 -j ACCEPT
+ip6tables -A OUTPUT -d 2001:4860:4860::8844 -j ACCEPT
 
 # Raw rules
 {% for rule in iptables_raw_rules %}
