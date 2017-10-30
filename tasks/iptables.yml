@@ -18,6 +18,14 @@
   template: dest={{iptables_rules_path}} src=etc/iptables.rules.j2 owner=root group=root mode=0744
   notify: iptables load
 
-- name: Autoload the rules
+- name: Prepare ip6tables rules
+  template: dest={{ip6tables_rules_path}} src=etc/ip6tables.rules.j2 owner=root group=root mode=0744
+  notify: ip6tables load
+
+- name: Autoload IPv4 rules
   template: src=etc/network/if-up.d/iptables_load.j2 dest={{iptables_load_path}} owner=root group=root mode=751
   when: iptables_load_path != ""
+
+- name: Autoload IPv6 rules
+  template: src=etc/network/if-up.d/ip6tables_load.j2 dest={{ip6tables_load_path}} owner=root group=root mode=751
+  when: ip6tables_load_path != ""

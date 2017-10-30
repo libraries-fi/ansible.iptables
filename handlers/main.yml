@@ -1,4 +1,7 @@
 ---
 
 - name: iptables load
-  shell: "{{iptables_rules_path}}"
+  command: "{{iptables_rules_path}}"
+
+- name: ip6tables load
+  command: "{{ip6tables_rules_path}}"
